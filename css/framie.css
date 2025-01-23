@@ -1,0 +1,373 @@
+@layer framie {
+  html {
+    scroll-behavior: smooth;
+    font-family: monospace;
+  }
+
+  body {
+    background-color: #222;
+    padding: 10px;
+    border-radius: 30px;
+    position: relative;
+  }
+
+  *,
+  *::before,
+  *::after {
+    box-sizing: border-box;
+    color: #fff;
+    font-weight: bold;
+    text-align: center;
+    margin: 0;
+    padding: 0;
+    border: none;
+    outline: none;
+    scrollbar-width: none; /* remove the scrollbar from all */
+  }
+
+  img {
+    max-width: 100%;
+    display: block;
+    margin: 0 auto;
+  }
+
+  .wrapper-data-title {
+    --main-col: #8abaf5;
+    --main-bg-col: #000;
+    border: 3px solid var(--main-col);
+    background-color: var(--main-bg-col);
+    padding: 30px;
+    margin-top: 30px;
+    border-radius: 20px;
+    position: relative;
+  }
+
+  .progress-cont {
+    position: fixed;
+    top: 0;
+    left: 0;
+    padding: 0;
+    margin: 0;
+    width: 100%;
+    height: 7px;
+    background-color: #eee5;
+    z-index: 100;
+
+    & > #progress {
+      top: 0;
+      left: 0;
+      padding: 0;
+      margin: 0;
+      width: 0%;
+      height: 7px;
+      background-color: #5561f5;
+      transition: width 300ms ease-out;
+    }
+  }
+  .progress {
+    background-color: #5561f5;
+    position: fixed;
+    inset: 0;
+    width: 100%;
+    height: 5px;
+    z-index: 100;
+    scale: 0 1;
+    --scale-up: 1 1;
+    transform-origin: left;
+    animation: scale-up linear 1ms;
+    animation-timeline: scroll(nearest);
+  }
+
+  .page-title {
+    margin-block-start: 20px;
+    font-weight: bold;
+    font-size: 30px;
+    border: 5px solid;
+    padding: 3px 10px;
+    letter-spacing: 2px;
+    text-align: center;
+    width: fit-content;
+    margin: 30px auto 50px;
+
+    &:hover {
+      color: yellow;
+      cursor: pointer;
+    }
+  }
+
+  input[type="text"] {
+    --input-bg-color: #ddd;
+    --input-color: #4955f7;
+    width: 100%;
+    background-color: var(--input-bg-color);
+    color: var(--input-color);
+    border-radius: 20px;
+    margin: 10px;
+    align-self: center;
+    padding: 15px;
+    text-align: left;
+
+    &:is(:focus, :focus-visible) {
+      background-color: #fff;
+    }
+  }
+
+  .chkbox-wrapper {
+    --chk-bg-color: #ddd;
+    --chk-color: #4955f7;
+    --transition: 200ms;
+    display: flex;
+    gap: 10px;
+
+    & > label {
+      white-space: nowrap;
+      font-size: 1.25rem;
+      font-weight: bold;
+    }
+
+    & > input[type="checkbox"] {
+      appearance: none;
+      border-radius: 7px;
+      background-color: var(--chk-bg-color);
+      width: 1rem;
+      aspect-ratio: 1;
+      margin: 0;
+      padding: 0;
+      transition: var(--transition);
+      cursor: pointer;
+      position: relative;
+
+      &:focus {
+        outline: none;
+      }
+
+      &:hover,
+      &:focus-visible {
+        outline: 3px solid var(--chk-color);
+        background-color: var(--chk-bg-color);
+      }
+
+      &::before {
+        content: "";
+        background-color: var(--chk-color);
+        transform: scale(0);
+        transition: transform var(--transition) ease-in-out;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        translate: -50% -50%;
+        width: 90%;
+        aspect-ratio: 1;
+        border-radius: 0.5em;
+        border-radius: inherit;
+      }
+
+      &:checked::before {
+        transform: scale(1);
+      }
+    }
+  }
+
+  .test-area {
+    --main-col: #00a2ff;
+    width: 100%;
+    align-items: normal;
+    gap: 50px;
+    position: relative;
+    background-color: #111;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 15px;
+    border-width: 7px;
+    margin-top: 50px;
+
+    & .area-controls {
+      position: absolute;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 15px;
+      top: -25px;
+      right: 20px;
+
+      /* mode-switch (on/off) */
+      & > .switch {
+        display: grid;
+        grid: none / 70% 1fr;
+        align-items: center;
+        justify-content: center;
+        background-color: var(--main-col);
+        width: 140px;
+        aspect-ratio: 1 / 0.3;
+        border-radius: 30% / 100%;
+
+        & > .key {
+          --d: 25px;
+          --off-bg-col: #f00;
+          --on-bg-col: #40ff2f;
+          --key-bg-col: #eee;
+          width: var(--d);
+          aspect-ratio: 1 / 0.3;
+          border-radius: 20% / 70%;
+          background-color: var(--off-bg-col);
+          position: relative;
+          transition: background-color 500ms;
+          cursor: pointer;
+
+          &::before {
+            content: "";
+            border-radius: 50%;
+            background-color: var(--key-bg-col);
+            width: calc(var(--d) * 0.7);
+            height: calc(var(--d) * 0.7);
+            position: absolute;
+            top: 50%;
+            left: 20%;
+            translate: -50% -50%;
+            transition: left 500ms;
+          }
+
+          &.on {
+            background-color: var(--on-bg-col);
+
+            &::before {
+              left: 80%;
+            }
+          }
+        }
+      }
+
+      /* animation controls */
+      & > .animation-control.chkbox-wrapper {
+        background-color: var(--main-col);
+        padding: 10px 17px;
+        border-radius: 20% / 70%;
+
+        & > input[type="checkbox"] {
+          width: 20px;
+        }
+
+        & > :is(#playState, #iterationPause, #alternate) {
+          border-radius: 50%;
+        }
+
+        & > :is(#playState, #iterationPause) {
+          &::before {
+            border-radius: inherit;
+            background-color: #47c900;
+          }
+        }
+
+        & > #alternate {
+          &::before {
+            border-radius: inherit;
+            background-color: #b500c9;
+          }
+        }
+      }
+    }
+
+    & .guide {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 20px;
+
+      & > #showGuide {
+        --brdr-col: red;
+        width: 50px;
+        aspect-ratio: 1;
+        cursor: pointer;
+        border-radius: 50%;
+        transition: background-color 300ms, transform 500ms;
+        position: relative;
+        outline: none;
+
+        &::before {
+          content: "";
+          box-sizing: border-box;
+          border: 4px solid;
+          border-color: transparent var(--brdr-col) var(--brdr-col) transparent;
+          width: 20px;
+          aspect-ratio: 1;
+          position: absolute;
+          top: 42%;
+          left: 50%;
+          transform: translate(-50%, -50%) rotateZ(45deg);
+          transition: border-color 500ms;
+        }
+
+        &:hover,
+        &:focus-visible {
+          background-color: #444;
+        }
+
+        &.open {
+          transform: rotateZ(180deg);
+
+          &::before {
+            --brdr-col: #2fffac;
+          }
+        }
+      }
+
+      & > #information {
+        width: 100%;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        gap: 20px;
+        overflow: hidden;
+        border-radius: 15px;
+        transform-origin: top;
+        transition: transform 300ms linear;
+        transform: rotateX(90deg);
+        display: none;
+
+        & > #options {
+          display: flex;
+          flex-wrap: wrap;
+          justify-content: center;
+          gap: 10px;
+
+          & > .option {
+            padding: 10px;
+            border-radius: 15px;
+            background-color: #222;
+            display: flex;
+            place-content: center;
+            font-size: 15px;
+            transition: 300ms background-color;
+
+            & > input[type="radio"] {
+              width: 20px;
+              height: 20px;
+            }
+
+            &:hover {
+              background-color: #444;
+            }
+          }
+        }
+
+        & > #syntax {
+          background-color: #222;
+          padding: 20px;
+          width: 100%;
+          text-align: left;
+          font-size: calc(0.3rem + 1vw);
+          border-radius: 20px;
+        }
+      }
+    }
+  }
+
+  @keyframes scale-up {
+    to {
+      scale: var(--scale-up);
+    }
+  }
+}

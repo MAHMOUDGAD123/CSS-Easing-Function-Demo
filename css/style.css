@@ -1,0 +1,95 @@
+@layer framie, test;
+
+@layer test {
+  .test-area {
+    --main-col: blue;
+
+    & > .area-controls > .animation-control > input::before {
+      background-color: #00c9c9;
+    }
+  }
+
+  .ball-area {
+    width: 90%;
+    margin-block: 50px;
+
+    #ball {
+      width: 50px;
+      aspect-ratio: 1;
+      border-radius: 50%;
+      background-image: linear-gradient(90deg, orange, red);
+      animation: move 2000ms alternate infinite linear;
+      position: relative;
+      left: 0;
+    }
+  }
+
+  .option {
+    --opacity: 0.6;
+    font-size: 17px;
+    font-weight: bolder;
+    background-color: rgb(85, 85, 85, var(--opacity));
+    padding: 7px 10px;
+    border-radius: 15px;
+    transition: background-color 300ms;
+    cursor: pointer;
+    user-select: none;
+
+    &.selected {
+      background-color: #008080;
+    }
+
+    &#userInput {
+      background-color: rgb(247, 78, 173, var(--opacity));
+
+      &.selected {
+        background-color: rgb(247, 78, 173);
+      }
+    }
+
+    &:hover,
+    &:focus-visible {
+      --opacity: 1;
+    }
+  }
+
+  #inputWrapper {
+    width: 100%;
+    max-width: 500px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    display: none;
+
+    & > label {
+      font-size: 1.25rem;
+
+      &:has(+ input:is(:focus-visible, :focus)) {
+        color: greenyellow;
+      }
+    }
+  }
+
+  #selections {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+
+  @keyframes move {
+    from {
+      left: 0;
+    }
+    to {
+      left: 90%;
+    }
+  }
+
+  @media (max-width: 500px) {
+    #inputWrapper {
+      flex-direction: column;
+    }
+  }
+}
